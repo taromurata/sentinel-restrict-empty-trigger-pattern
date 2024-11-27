@@ -1,0 +1,3 @@
+# Prevent Empty Trigger Pattern
+
+

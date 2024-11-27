@@ -1,0 +1,24 @@
+import "tfplan/v2" as tfplan
+
+# file_triggers_enabled is true, but trigger_patterns and trigger_prefixes are not set
+violated_workspaces = filter tfplan.planned_values.resources as _, r {
+	r.type is "tfe_workspace" and
+		r.values.file_triggers_enabled is true and
+		(((r.values.trigger_patterns is []) or (r.values.trigger_patterns is null)) and ((r.values.trigger_prefixes is []) or (r.values.trigger_prefixes is null)))
+}
+
+main = rule {
+	length(violated_workspaces) == 0
+}
+
+if length(violated_workspaces) > 0 {
+	print("以下のワークスペースはfile_triggers_enabledがtrueに設定されていますが、trigger_patternsとtrigger_prefixesが設定されていません:\n")
+
+	workspace_names = map violated_workspaces as _, w { w.name }
+	for workspace_names as w {
+		print(w)
+	}
+
+	print("\n")
+	print("file_triggers_enabledがtrueに設定されているワークスペースには、trigger_patternsかtrigger_prefixesのどちらかを設定してください。")
+}
