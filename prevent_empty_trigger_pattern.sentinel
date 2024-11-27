@@ -12,7 +12,7 @@ main = rule {
 }
 
 if length(violated_workspaces) > 0 {
-	print("以下のワークスペースはfile_triggers_enabledがtrueに設定されていますが、trigger_patternsとtrigger_prefixesが設定されていません:\n")
+	print("以下のワークスペースはfile_triggers_enabledがtrueに設定されていますが、\ntrigger_patternsとtrigger_prefixesが設定されていません:\n")
 
 	workspace_names = map violated_workspaces as _, w { w.name }
 	for workspace_names as w {
@@ -20,5 +20,5 @@ if length(violated_workspaces) > 0 {
 	}
 
 	print("\n")
-	print("file_triggers_enabledがtrueに設定されているワークスペースには、trigger_patternsかtrigger_prefixesのどちらかを設定してください。")
+	print("file_triggers_enabledがtrueに設定されているワークスペースには、\ntrigger_patternsかtrigger_prefixesのどちらかを設定してください。")
 }
